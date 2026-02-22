@@ -1,0 +1,23 @@
+/build/
+/dist/
+/out/
+/.next/
+/.nuxt/
+/.output/
+
+# Dependencies
+/node_modules/
+/bower_components/
+/.pnp/
+/.pnp.js
+/vendor/
+
+# Environment variables and secrets
+.env
+.env.*
+*.pem
+*.key
+id_rsa
+*.cert
+*.p12
+*_private*
