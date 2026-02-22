@@ -1,1 +1,40 @@
 @import "tailwindcss";
+
+:root {
+  --powder-pink: #FFD6E0;
+  --milk-beige: #F5E6D3;
+  --light-cream: #FFF9F0;
+  --soft-rose: #FFB8C6;
+  --warm-beige: #E8D4BF;
+  --text-dark: #4A4A4A;
+}
+
+@layer base {
+  body {
+    color: var(--text-dark);
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  h3 {
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  button {
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+}
