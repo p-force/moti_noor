@@ -223,7 +223,7 @@
   object-fit: cover;
   border-radius: 1.5rem;
   transform: rotate(-5deg);
-  filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.18));
+  box-shadow: 0 30px 50px rgba(0, 0, 0, 0.18);
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -349,11 +349,14 @@
   .flavor-slider__image-wrap {
     flex: none;
     order: 2;
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
 
   .flavor-slider__image {
     width: 47%;
-    transform: rotate(-3deg);
+    transform: rotate(-3deg) translateZ(0);
+    backface-visibility: hidden;
   }
 
   .flavor-slider__arrow {
