@@ -45,9 +45,9 @@ export function HeroSection() {
           {/* Tagline */}
           <p
             className="text-sm font-medium uppercase tracking-[0.35em]"
-            style={{ color: "#C4899A" }}
+            style={{ color: "#C4899A", fontFamily: "var(--font-nunito)" }}
           >
-            Handcrafted Mochi & Donuts
+            Моти и пончики ручной работы
           </p>
 
           {/* Headline */}
@@ -57,11 +57,12 @@ export function HeroSection() {
               fontSize: "clamp(1.8rem, 4vw, 2.8rem)",
               color: "#3A2835",
               lineHeight: "1.25",
+              fontFamily: "var(--font-playfair)",
             }}
           >
-            Every Bite Tells a Story of
+            В каждом кусочке — история
             <br />
-            <span style={{ color: "#D4657D" }}>Love & Sweetness</span>
+            <span style={{ color: "#D4657D" }}>любви и нежности</span>
           </h2>
 
           {/* Subtext */}
@@ -69,8 +70,8 @@ export function HeroSection() {
             className="max-w-xl text-lg leading-relaxed"
             style={{ color: "#5A4A55", opacity: 0.85 }}
           >
-            Made with passion, served with love. Bring joy to your
-            sweetest moments.
+            Сделано с душой, подано с любовью. Дарим радость вашим самым сладким
+            моментам.
           </p>
 
           {/* CTA */}
@@ -79,7 +80,7 @@ export function HeroSection() {
               className="hero-cta-primary rounded-full px-12 py-4 text-base font-semibold transition-all duration-300 hover:scale-105"
               style={{ minWidth: "220px" }}
             >
-              View Menu
+              Меню
             </button>
             <button
               className="rounded-full border-2 px-12 py-4 text-base font-semibold transition-all duration-300 hover:scale-105"
@@ -89,7 +90,7 @@ export function HeroSection() {
                 minWidth: "220px",
               }}
             >
-              Our Story
+              Наша история
             </button>
           </div>
 
@@ -108,7 +109,7 @@ export function HeroSection() {
               className="text-sm font-medium"
               style={{ color: "#5A4A55", opacity: 0.7 }}
             >
-              500+ Happy Customers
+              500+ довольных клиентов
             </span>
           </div>
         </div>
