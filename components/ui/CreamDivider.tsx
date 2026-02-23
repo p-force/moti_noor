@@ -9,6 +9,10 @@ interface CreamDividerProps {
   bottomColor: string;
   variant?: Variant;
   className?: string;
+  /** Отключает тень у волны (удобно при анимированной смене цветов) */
+  disableShadow?: boolean;
+  /** Без перехода цвета — смена мгновенная, без моргания волны */
+  noTransition?: boolean;
 }
 
 const VIEWBOX_H = 170;
@@ -64,14 +68,19 @@ const paths: Record<Variant, string> = {
 
 const TRANSITION = "fill 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
 
+const noTransitionStyle = { transition: "none" };
+
 export function CreamDivider({
   topColor,
   bottomColor,
   variant = 1,
   className = "",
+  disableShadow = false,
+  noTransition = false,
 }: CreamDividerProps) {
   const rawId = useId();
   const filterId = `cd-${rawId.replace(/:/g, "")}`;
+  const fillTransition = noTransition ? noTransitionStyle : { transition: TRANSITION };
 
   return (
     <div
@@ -84,26 +93,28 @@ export function CreamDivider({
         className="block w-full h-[65px] md:h-[95px] lg:h-[120px]"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <defs>
-          <filter id={filterId} x="-2%" y="-5%" width="104%" height="130%">
-            <feDropShadow
-              dx="0"
-              dy="6"
-              stdDeviation="12"
-              floodColor="#000"
-              floodOpacity="0.08"
-            />
-          </filter>
-        </defs>
+        {!disableShadow && (
+          <defs>
+            <filter id={filterId} x="-2%" y="-5%" width="104%" height="130%">
+              <feDropShadow
+                dx="0"
+                dy="4"
+                stdDeviation="8"
+                floodColor="#000"
+                floodOpacity="0.05"
+              />
+            </filter>
+          </defs>
+        )}
         <rect
           width="1440"
           height={VIEWBOX_H}
-          style={{ fill: bottomColor, transition: TRANSITION }}
+          style={{ fill: bottomColor, ...fillTransition }}
         />
         <path
           d={paths[variant]}
-          filter={`url(#${filterId})`}
-          style={{ fill: topColor, transition: TRANSITION }}
+          filter={disableShadow ? undefined : `url(#${filterId})`}
+          style={{ fill: topColor, ...fillTransition }}
         />
       </svg>
     </div>
