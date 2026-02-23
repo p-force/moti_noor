@@ -1,22 +1,16 @@
-import type { Metadata } from "next";
-import { Playfair_Display, Nunito } from "next/font/google";
-import "./globals.css";
-
-const playfair = Playfair_Display({
-  subsets: ["latin", "cyrillic"],
-  variable: "--font-playfair",
-  display: "swap",
-});
+import type { Metadata } from 'next';
+import { Nunito } from 'next/font/google';
+import './globals.css';
 
 const nunito = Nunito({
-  subsets: ["latin", "cyrillic"],
-  variable: "--font-nunito",
-  display: "swap",
+  subsets: ['latin', 'cyrillic'],
+  variable: '--font-nunito',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: "Moti Noor",
-  description: "Моти и пончики ручной работы",
+  title: 'Moti Noor',
+  description: 'Моти и пончики ручной работы',
 };
 
 export default function RootLayout({
@@ -26,9 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
-      <body className={`${playfair.variable} ${nunito.variable} antialiased`}>
-        {children}
-      </body>
+      <body className={`${nunito.variable} antialiased`}>{children}</body>
     </html>
   );
 }

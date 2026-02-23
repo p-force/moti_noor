@@ -111,7 +111,6 @@ export function ProductSlider({
           topColor={topDividerColor}
           bottomColor={currentBgColor}
           variant={1}
-          disableShadow
           noTransition
         />
       )}
@@ -249,7 +248,6 @@ export function ProductSlider({
           topColor={currentBgColor}
           bottomColor={bottomDividerColor}
           variant={2}
-          disableShadow
           noTransition
         />
       )}
