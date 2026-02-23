@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { ImageWithFallback } from '@/components/ui/ImageWithFallback';
 import { CreamDivider } from '@/components/ui/CreamDivider';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -20,6 +20,8 @@ interface ProductSliderProps {
   bottomDividerColor?: string;
 }
 
+const SLIDE_DELAY_MS = 150;
+
 export function ProductSlider({
   products,
   topDividerColor,
@@ -29,27 +31,78 @@ export function ProductSlider({
   const [colorIndex, setColorIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [slideKey, setSlideKey] = useState(0);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const doneTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const total = products.length;
   const current = products[active];
-  const currentBgColor = products[colorIndex].bgColor;
+  const currentBgColor = products[colorIndex]?.bgColor;
 
   const goTo = useCallback(
     (idx: number) => {
-      if (isAnimating || idx === active) return;
+      if (isAnimating || idx === active || total === 0) return;
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (doneTimeoutRef.current) clearTimeout(doneTimeoutRef.current);
       setIsAnimating(true);
-      setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
+        timeoutRef.current = null;
         setActive(idx);
         setColorIndex(idx);
         setSlideKey((k) => k + 1);
-        setTimeout(() => setIsAnimating(false), 50);
-      }, 350);
+        doneTimeoutRef.current = setTimeout(() => {
+          doneTimeoutRef.current = null;
+          setIsAnimating(false);
+        }, 50);
+      }, SLIDE_DELAY_MS);
     },
-    [isAnimating, active]
+    [isAnimating, active, total]
   );
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (doneTimeoutRef.current) clearTimeout(doneTimeoutRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        goTo((active - 1 + total) % total);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        goTo((active + 1) % total);
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [active, total, goTo]);
+
+  // Preload adjacent slide images for instant switch
+  useEffect(() => {
+    if (total < 2) return;
+    const links: HTMLLinkElement[] = [];
+    const prevI = (active - 1 + total) % total;
+    const nextI = (active + 1) % total;
+    [products[prevI]?.image, products[nextI]?.image].forEach((href) => {
+      if (!href) return;
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = href;
+      document.head.appendChild(link);
+      links.push(link);
+    });
+    return () => links.forEach((link) => link.remove());
+  }, [active, total, products]);
 
   const next = () => goTo((active + 1) % total);
   const prev = () => goTo((active - 1 + total) % total);
+
+  if (total === 0) return null;
+
+  const hasMultipleSlides = total > 1;
 
   return (
     <>
@@ -152,36 +205,43 @@ export function ProductSlider({
           </div>
         </div>
 
-        {/* Arrows */}
-        <button
-          className="flavor-slider__arrow flavor-slider__arrow--prev"
-          onClick={prev}
-          aria-label="Previous flavor"
-        >
-          <ChevronLeft size={28} />
-        </button>
-        <button
-          className="flavor-slider__arrow flavor-slider__arrow--next"
-          onClick={next}
-          aria-label="Next flavor"
-        >
-          <ChevronRight size={28} />
-        </button>
-
-        {/* Dots */}
-        <div className="flavor-slider__dots">
-          {products.map((_, i) => (
+        {hasMultipleSlides && (
+          <>
             <button
-              key={i}
-              className={`flavor-slider__dot ${i === active ? 'flavor-slider__dot--active' : ''}`}
-              style={{
-                background: i === active ? current.accentColor : 'rgba(255,255,255,0.5)',
-              }}
-              onClick={() => goTo(i)}
-              aria-label={`Go to slide ${i + 1}`}
-            />
-          ))}
-        </div>
+              type="button"
+              className="flavor-slider__arrow flavor-slider__arrow--prev"
+              onClick={prev}
+              aria-label="Previous flavor"
+            >
+              <ChevronLeft size={28} />
+            </button>
+            <button
+              type="button"
+              className="flavor-slider__arrow flavor-slider__arrow--next"
+              onClick={next}
+              aria-label="Next flavor"
+            >
+              <ChevronRight size={28} />
+            </button>
+
+            <div className="flavor-slider__dots" role="tablist" aria-label="Slides">
+              {products.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  role="tab"
+                  aria-selected={i === active}
+                  aria-label={`Go to slide ${i + 1}`}
+                  className={`flavor-slider__dot ${i === active ? 'flavor-slider__dot--active' : ''}`}
+                  style={{
+                    background: i === active ? current.accentColor : 'rgba(255,255,255,0.5)',
+                  }}
+                  onClick={() => goTo(i)}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </section>
 
       {bottomDividerColor && (
