@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useId } from "react";
+import { useId } from 'react';
 
 type Variant = 1 | 2 | 3 | 4 | 5;
 
@@ -66,27 +66,24 @@ const paths: Record<Variant, string> = {
   `,
 };
 
-const TRANSITION = "fill 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
+const TRANSITION = 'fill 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
 
-const noTransitionStyle = { transition: "none" };
+const noTransitionStyle = { transition: 'none' };
 
 export function CreamDivider({
   topColor,
   bottomColor,
   variant = 1,
-  className = "",
+  className = '',
   disableShadow = false,
   noTransition = false,
 }: CreamDividerProps) {
   const rawId = useId();
-  const filterId = `cd-${rawId.replace(/:/g, "")}`;
+  const filterId = `cd-${rawId.replace(/:/g, '')}`;
   const fillTransition = noTransition ? noTransitionStyle : { transition: TRANSITION };
 
   return (
-    <div
-      className={`relative z-[2] w-full leading-[0] -mt-[2px] ${className}`}
-      aria-hidden="true"
-    >
+    <div className={`relative z-[2] w-full leading-[0] -mt-[2px] ${className}`} aria-hidden="true">
       <svg
         viewBox={`0 0 1440 ${VIEWBOX_H}`}
         preserveAspectRatio="none"
@@ -96,21 +93,11 @@ export function CreamDivider({
         {!disableShadow && (
           <defs>
             <filter id={filterId} x="-2%" y="-5%" width="104%" height="130%">
-              <feDropShadow
-                dx="0"
-                dy="4"
-                stdDeviation="8"
-                floodColor="#000"
-                floodOpacity="0.05"
-              />
+              <feDropShadow dx="0" dy="6" stdDeviation="10" floodColor="#000" floodOpacity="0.07" />
             </filter>
           </defs>
         )}
-        <rect
-          width="1440"
-          height={VIEWBOX_H}
-          style={{ fill: bottomColor, ...fillTransition }}
-        />
+        <rect width="1440" height={VIEWBOX_H} style={{ fill: bottomColor, ...fillTransition }} />
         <path
           d={paths[variant]}
           filter={disableShadow ? undefined : `url(#${filterId})`}
