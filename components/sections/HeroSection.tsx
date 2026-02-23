@@ -73,45 +73,6 @@ export function HeroSection() {
             Сделано с душой, подано с любовью. Дарим радость вашим самым сладким
             моментам.
           </p>
-
-          {/* CTA */}
-          <div className="mt-2 flex flex-col items-center gap-4 sm:flex-row">
-            <button
-              className="hero-cta-primary rounded-full px-12 py-4 text-base font-semibold transition-all duration-300 hover:scale-105"
-              style={{ minWidth: "220px" }}
-            >
-              Меню
-            </button>
-            <button
-              className="rounded-full border-2 px-12 py-4 text-base font-semibold transition-all duration-300 hover:scale-105"
-              style={{
-                borderColor: "#D4657D",
-                color: "#D4657D",
-                minWidth: "220px",
-              }}
-            >
-              Наша история
-            </button>
-          </div>
-
-          {/* Social proof */}
-          <div className="mt-4 flex items-center gap-2">
-            <div className="flex gap-0.5">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star
-                  key={i}
-                  className="h-4 w-4 fill-current"
-                  style={{ color: "#D4657D" }}
-                />
-              ))}
-            </div>
-            <span
-              className="text-sm font-medium"
-              style={{ color: "#5A4A55", opacity: 0.7 }}
-            >
-              500+ довольных клиентов
-            </span>
-          </div>
         </div>
       </div>
 
